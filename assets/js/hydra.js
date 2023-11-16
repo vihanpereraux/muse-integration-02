@@ -1,5 +1,13 @@
 var hydra = new Hydra({ detectAudio: false })
 
+let elec1 = 0;
+let elec2 = 0;
+let elec3 = 0;
+let elec4 = 0;
+
+let getDataButtonClicked = false;
+let getRequestInterval;
+
 
 // mouse coordiantes
 let mouseXCord = 0;
@@ -49,13 +57,35 @@ function getLocalStream() {
 }
 
 
+// fetching the OSC stream via the flask local server
+document.getElementById('get-data').addEventListener('click', function(){
+  if(!getDataButtonClicked){
+    getDataButtonClicked = true;
+    getRequestInterval = setInterval(async () => {
+      const response = await fetch('http://127.0.0.1:5000/');
+      const myJson = await response.json(); //extract JSON from the http response
+
+      elec1 = myJson.elec1;
+      elec2 = myJson.elec2;
+      elec3 = myJson.elec3;
+      elec4 = myJson.elec4;
+      console.log(elec1, elec2, elec3, elec4);
+    }, 100);
+  }
+  else{
+    getDataButtonClicked = false;
+    clearInterval(getRequestInterval);
+  }
+});
+
+
 // animation
-osc(10, 0.5, 0.001)
-    .kaleid(() => envVolume * 2)
+osc(7, () => elec1 * 1, () => elec1 * .001)
+    .kaleid(() => elec4 * 0.1)
     // add EEG data here
-    .color(.5, .5, 0.2)
-    .colorama(() => envVolume * .01)
-    .rotate(() => mouseXCord * 0.001)
-    .modulateRotate(o0, () => envVolume, 0.001)
+    .color(.5, .6, .2)
+    .colorama(() => elec1 * 1.2)
+    .rotate(() => elec3 * 0.2)
+    .modulateRotate(o0, () => elec2 * 1.2, 0.1)
     .modulate(o0, 1)
 .out(o0)

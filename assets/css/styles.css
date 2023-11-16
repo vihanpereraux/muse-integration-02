@@ -16,3 +16,9 @@ canvas{
     left: 0;
     z-index: 1;
 }
+#get-data{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}

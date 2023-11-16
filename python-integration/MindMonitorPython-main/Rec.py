@@ -13,11 +13,13 @@ def getData():
     print(allvalues[0])
     return allvalues[0]
 
-def handleData(electrodeOne, electrodeTwo):
+def handleData(electrodeOne, electrodeTwo, electrodeThree, electrodeFour):
     db.truncate()
     db.insert({
         'elec1': electrodeOne, 
-        'elec2': electrodeTwo})
+        'elec2': electrodeTwo,
+        'elec3': electrodeThree,
+        'elec4': electrodeFour,})
 
     getData()
 
@@ -33,7 +35,7 @@ def eeg_handler(address: str,*args):
     ]
 
     print(dummyArray)
-    handleData(electrodeOne, electrodeTwo)
+    handleData(electrodeOne, electrodeTwo, electrodeThree, electrodeFour)
     
 if __name__ == "__main__":
     dispatcher = dispatcher.Dispatcher()
